@@ -11,7 +11,7 @@
 
 ## 3. Tech Lead agent
 
-- [ ] 3.1 Implement the Gemini-backed `TechLeadAgent` in `core:ai` (model constant, role-only system instruction, response schema with estimate enum `0..20` without `?`, language instruction in the user content, 30 s timeout) and bind it in Hilt; verify the app compiles and a debug build evaluates a sample task end to end
+- [x] 3.1 Implement the Gemini-backed `TechLeadAgent` in `core:ai` (model constant, role-only system instruction, response schema with estimate enum `0..20` without `?`, language instruction in the user content, 30 s timeout) and bind it in Hilt; verify the app compiles and a debug build evaluates a sample task end to end
 - [x] 3.2 Implement response parsing and validation plus error mapping (`Network`, `Timeout`, `InvalidResponse`, `Rejected`, `Unknown`) behind a parser that is testable without Firebase; verify unit tests cover valid JSON, off-scale estimates (4, 21, "?"), blank title, blank risk, empty risk list (valid), malformed JSON and timeout mapping
 - [x] 3.3 Verify by unit test that the built prompt contains the description and language tag and contains no user vote, sprint data or previous evaluation
 
@@ -24,7 +24,7 @@
 - [x] 5.1 Add `TaskRoute(sprintId, taskId?)` and navigation extensions in `feature:tasks`, and wire them in `:app`; verify navigation compiles and the route opens an empty screen
 - [x] 5.2 Implement `TaskViewModel` (draft in `SavedStateHandle`, one-time init from DB for saved tasks, evaluate enabled only with non-blank description and selected vote, `isEvaluating` lock and duplicate-tap guard, success navigation event, failure Snackbar event); verify Turbine tests cover preconditions, success -> navigation event, failure -> event + draft kept, restored handle wins over DB values, and no second agent call while evaluating
 - [x] 5.3 Implement `TaskScreen` (description field, vote `LazyRow`, indeterminate progress bar, disabled inputs while evaluating, AI vote and risks section for saved tasks, "Evaluate with Tech Lead" / "Re-evaluate" button, `SnackbarHost`); verify Paparazzi snapshots for new empty, filled, evaluating, and saved-task states
-- [ ] 5.4 Add voice input (`RecognizerIntent` launcher with device language, `<queries>` entry for `RecognitionService`, mic hidden when unavailable, result appended with a space); verify a unit test of the append logic and manually dictate on a device, including cancel
+- [x] 5.4 Add voice input (`RecognizerIntent` launcher with device language, `<queries>` entry for `RecognitionService`, mic hidden when unavailable, result appended with a space); verify a unit test of the append logic and manually dictate on a device, including cancel
 
 ## 6. Sprint details integration
 
@@ -32,5 +32,5 @@
 
 ## 7. Integration check
 
-- [ ] 7.1 Run `./gradlew testDebugUnitTest verifyPaparazziDebug connectedDebugAndroidTest`, then manually walk the spec scenarios on a device: create and evaluate, airplane-mode failure and retry, rotation while typing and while evaluating, "Don't keep activities" restore, re-evaluate success and failure, Portuguese device language, delete a sprint with tasks; verify all pass
-- [ ] 7.2 Verify App Check enforcement: a debug build without a registered debug token gets its evaluation rejected (failure Snackbar), and with the token registered it succeeds
+- [x] 7.1 Run `./gradlew testDebugUnitTest verifyPaparazziDebug connectedDebugAndroidTest`, then manually walk the spec scenarios on a device: create and evaluate, airplane-mode failure and retry, rotation while typing and while evaluating, "Don't keep activities" restore, re-evaluate success and failure, Portuguese device language, delete a sprint with tasks; verify all pass
+- [x] 7.2 Verify App Check enforcement: a debug build without a registered debug token gets its evaluation rejected (failure Snackbar), and with the token registered it succeeds

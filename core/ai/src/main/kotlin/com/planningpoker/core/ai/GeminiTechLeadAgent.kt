@@ -1,5 +1,6 @@
 package com.planningpoker.core.ai
 
+import android.util.Log
 import com.planningpoker.core.model.EvaluationError
 import com.planningpoker.core.model.TaskEvaluation
 import com.planningpoker.core.model.TaskEvaluationRequest
@@ -9,6 +10,8 @@ import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration.Companion.seconds
 
 internal val EVALUATION_TIMEOUT = 30.seconds
+
+private const val TAG = "TechLeadAgent"
 
 internal class GeminiTechLeadAgent @Inject constructor(
     private val model: TechLeadModel,
@@ -23,9 +26,12 @@ internal class GeminiTechLeadAgent @Inject constructor(
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
-            return TaskEvaluation.Failure(e.toEvaluationError())
+            val error = e.toEvaluationError()
+            Log.w(TAG, "Tech Lead evaluation failed: $error", e)
+            return TaskEvaluation.Failure(error)
         }
         return if (answer == null) {
+            Log.w(TAG, "Tech Lead evaluation failed: ${EvaluationError.Timeout} after $EVALUATION_TIMEOUT")
             TaskEvaluation.Failure(EvaluationError.Timeout)
         } else {
             TechLeadResponseParser.parse(answer.text)

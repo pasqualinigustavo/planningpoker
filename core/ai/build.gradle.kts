@@ -6,6 +6,9 @@ plugins {
 
 android {
     namespace = "com.planningpoker.core.ai"
+
+    // GeminiTechLeadAgent logs failures with android.util.Log, which is a stub on the JVM.
+    testOptions.unitTests.isReturnDefaultValues = true
 }
 
 dependencies {
