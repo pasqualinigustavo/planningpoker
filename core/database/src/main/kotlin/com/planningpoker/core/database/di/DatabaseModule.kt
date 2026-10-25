@@ -3,6 +3,7 @@ package com.planningpoker.core.database.di
 import android.content.Context
 import androidx.room.Room
 import com.planningpoker.core.database.PlanningPokerDatabase
+import com.planningpoker.core.database.dao.SprintDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,4 +24,7 @@ internal object DatabaseModule {
         PlanningPokerDatabase::class.java,
         "planning-poker-database",
     ).build()
+
+    @Provides
+    fun providesSprintDao(database: PlanningPokerDatabase): SprintDao = database.sprintDao()
 }
