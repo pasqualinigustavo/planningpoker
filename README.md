@@ -23,6 +23,13 @@ By withholding the user's vote from the AI prompt, the app prevents cognitive an
 3. **Unbiased Tech Lead Evaluation:** The AI receives **only** the task description and device language—never your vote, sprint metadata, or previous evaluations. It returns a structured JSON response containing a concise **Title**, a story-point **Estimate** (`0–20`), and concrete **Technical/Scope Risks**.
 4. **Compare & Refine:** Compare your estimate against the AI Tech Lead's vote, adjust the task scope if needed, and re-evaluate at any time.
 
+### 📱 App Walkthrough
+
+| 1. Sprints Dashboard | 2. New Task & User Vote | 3. Tech Lead AI Evaluation | 4. Sprint Task History |
+| :---: | :---: | :---: | :---: |
+| <img src="docs/screenshots/01-sprints-dashboard.png" width="210" alt="Sprints Dashboard" /> | <img src="docs/screenshots/02-new-task.png" width="210" alt="New Task and Vote" /> | <img src="docs/screenshots/03-tech-lead-evaluation.png" width="210" alt="Tech Lead Evaluation" /> | <img src="docs/screenshots/04-sprint-details.png" width="210" alt="Sprint Details with Tasks" /> |
+| *Create and browse local sprints ordered newest first.* | *Describe the task (text or voice) and lock in your vote first.* | *Compare your vote with the AI Tech Lead's estimate and risks.* | *Review all estimated tasks inside the sprint.* |
+
 ---
 
 ## 📋 Spec-Driven Development (OpenSpec)

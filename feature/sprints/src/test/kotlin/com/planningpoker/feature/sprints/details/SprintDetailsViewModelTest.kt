@@ -3,7 +3,10 @@ package com.planningpoker.feature.sprints.details
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.planningpoker.core.model.Sprint
+import com.planningpoker.core.model.Task
+import com.planningpoker.core.model.Vote
 import com.planningpoker.feature.sprints.testing.FakeSprintRepository
+import com.planningpoker.feature.sprints.testing.FakeTaskRepository
 import com.planningpoker.feature.sprints.testing.MainDispatcherRule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -21,6 +24,18 @@ class SprintDetailsViewModelTest {
 
     private val sprint = Sprint(id = 7, name = "Sprint 42", createdAt = Instant.EPOCH)
     private val repository = FakeSprintRepository(listOf(sprint))
+    private val taskRepository = FakeTaskRepository()
+
+    private fun task(id: Long, sprintId: Long = sprint.id) = Task(
+        id = id,
+        sprintId = sprintId,
+        title = "Task $id",
+        description = "Description $id",
+        userVote = Vote.THREE,
+        aiVote = Vote.FIVE,
+        risks = emptyList(),
+        evaluatedAt = Instant.EPOCH,
+    )
 
     private fun viewModel(
         sprintId: Long = sprint.id,
@@ -28,6 +43,7 @@ class SprintDetailsViewModelTest {
     ) = SprintDetailsViewModel(
         SavedStateHandle(mapOf("sprintId" to sprintId) + extras),
         repository,
+        taskRepository,
     )
 
     @Test
@@ -35,7 +51,21 @@ class SprintDetailsViewModelTest {
         val viewModel = viewModel()
 
         viewModel.uiState.test {
-            assertEquals(SprintDetailsUiState.Success(sprint), awaitItem())
+            assertEquals(SprintDetailsUiState.Success(sprint, emptyList()), awaitItem())
+        }
+    }
+
+    @Test
+    fun showsOnlyThisSprintsTasksAndUpdatesWhenOneIsSaved() = runTest {
+        taskRepository.tasks.value = listOf(task(1), task(2, sprintId = 99))
+        val viewModel = viewModel()
+
+        viewModel.uiState.test {
+            assertEquals(SprintDetailsUiState.Success(sprint, listOf(task(1))), awaitItem())
+
+            taskRepository.tasks.value = taskRepository.tasks.value + task(3)
+
+            assertEquals(SprintDetailsUiState.Success(sprint, listOf(task(1), task(3))), awaitItem())
         }
     }
 

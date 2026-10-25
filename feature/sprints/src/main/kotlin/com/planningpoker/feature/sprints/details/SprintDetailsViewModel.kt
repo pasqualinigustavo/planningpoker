@@ -5,14 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.planningpoker.core.data.repository.SprintRepository
+import com.planningpoker.core.data.repository.TaskRepository
 import com.planningpoker.feature.sprints.navigation.SprintDetailsRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -23,9 +24,10 @@ import javax.inject.Inject
 class SprintDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val sprintRepository: SprintRepository,
+    taskRepository: TaskRepository,
 ) : ViewModel() {
 
-    private val sprintId = savedStateHandle.toRoute<SprintDetailsRoute>().sprintId
+    val sprintId = savedStateHandle.toRoute<SprintDetailsRoute>().sprintId
 
     private val navigateBackChannel = Channel<Unit>(Channel.CONFLATED)
 
@@ -35,7 +37,9 @@ class SprintDetailsViewModel @Inject constructor(
     val uiState: StateFlow<SprintDetailsUiState> = sprintRepository.observeSprint(sprintId)
         .onEach { sprint -> if (sprint == null) navigateBackChannel.trySend(Unit) }
         .filterNotNull()
-        .map<_, SprintDetailsUiState> { SprintDetailsUiState.Success(it) }
+        .combine(taskRepository.observeTasks(sprintId)) { sprint, tasks ->
+            SprintDetailsUiState.Success(sprint, tasks) as SprintDetailsUiState
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
