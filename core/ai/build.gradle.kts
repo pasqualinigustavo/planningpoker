@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.planningpoker.android.library)
     alias(libs.plugins.planningpoker.android.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -12,6 +13,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.ai)
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.kotlinx.coroutines.test)
 }

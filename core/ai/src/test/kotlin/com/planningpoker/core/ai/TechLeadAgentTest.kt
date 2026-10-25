@@ -1,17 +1,19 @@
 package com.planningpoker.core.ai
 
+import com.planningpoker.core.model.TaskEvaluation
 import com.planningpoker.core.model.TaskEvaluationRequest
 import com.planningpoker.core.model.TaskEvaluationResult
+import com.planningpoker.core.model.Vote
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class TechLeadAgentTest {
 
-    private class FakeTechLeadAgent(private val result: TaskEvaluationResult) : TechLeadAgent {
+    private class FakeTechLeadAgent(private val result: TaskEvaluation) : TechLeadAgent {
         val requests = mutableListOf<TaskEvaluationRequest>()
 
-        override suspend fun evaluate(request: TaskEvaluationRequest): TaskEvaluationResult {
+        override suspend fun evaluate(request: TaskEvaluationRequest): TaskEvaluation {
             requests += request
             return result
         }
@@ -25,7 +27,9 @@ class TechLeadAgentTest {
 
     @Test
     fun consumerWorksWithFakeAgentWithoutFirebase() = runTest {
-        val expected = TaskEvaluationResult(title = "Login", estimate = 5, risks = listOf("Scope"))
+        val expected = TaskEvaluation.Success(
+            TaskEvaluationResult(title = "Login", estimate = Vote.FIVE, risks = listOf("Scope")),
+        )
         val agent = FakeTechLeadAgent(expected)
 
         val result = Consumer(agent).evaluate("Build the login screen")

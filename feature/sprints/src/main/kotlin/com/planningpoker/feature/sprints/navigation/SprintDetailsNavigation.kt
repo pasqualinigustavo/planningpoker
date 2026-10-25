@@ -11,8 +11,12 @@ data class SprintDetailsRoute(val sprintId: Long)
 
 fun NavController.navigateToSprintDetails(sprintId: Long) = navigate(SprintDetailsRoute(sprintId))
 
-fun NavGraphBuilder.sprintDetailsScreen(onBack: () -> Unit) {
+fun NavGraphBuilder.sprintDetailsScreen(
+    onBack: () -> Unit,
+    onCreateTask: (sprintId: Long) -> Unit,
+    onTaskClick: (sprintId: Long, taskId: Long) -> Unit,
+) {
     composable<SprintDetailsRoute> {
-        SprintDetailsRoute(onBack = onBack)
+        SprintDetailsRoute(onBack = onBack, onCreateTask = onCreateTask, onTaskClick = onTaskClick)
     }
 }

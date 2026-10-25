@@ -1,8 +1,8 @@
 package com.planningpoker.core.model
 
-// Placeholder shape; `add-task-estimation` replaces `estimate` with the vote scale type.
+/** A successful Tech Lead evaluation. [estimate] is always one of [AI_VOTES]. */
 data class TaskEvaluationResult(
     val title: String,
-    val estimate: Int,
+    val estimate: Vote,
     val risks: List<String>,
 )
