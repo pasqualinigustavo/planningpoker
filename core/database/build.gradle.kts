@@ -11,4 +11,8 @@ android {
 dependencies {
     api(projects.core.model)
     implementation(libs.kotlinx.coroutines.core)
+
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.turbine)
 }

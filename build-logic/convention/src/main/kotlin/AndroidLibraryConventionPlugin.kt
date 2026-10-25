@@ -19,6 +19,8 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         }
         dependencies {
             add("testImplementation", libs.findLibrary("junit").get())
+            add("androidTestImplementation", libs.findLibrary("androidx-test-runner").get())
+            add("androidTestImplementation", libs.findLibrary("androidx-test-ext-junit").get())
         }
     }
 }

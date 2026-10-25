@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_sprints_title">Sprints</string>
+    <string name="feature_sprints_create">Create sprint</string>
+    <string name="feature_sprints_empty_title">No sprints</string>
+    <string name="feature_sprints_empty_message">Create your first sprint to start estimating tasks.</string>
+    <string name="feature_sprints_created_on">Created %1$s</string>
+
+    <string name="feature_sprints_dialog_title">New sprint</string>
+    <string name="feature_sprints_dialog_name">Name</string>
+    <string name="feature_sprints_dialog_save">Save</string>
+    <string name="feature_sprints_dialog_cancel">Cancel</string>
+
+    <string name="feature_sprints_back">Back</string>
+    <string name="feature_sprints_delete">Delete sprint</string>
+    <string name="feature_sprints_no_tasks_title">No tasks yet</string>
+    <string name="feature_sprints_no_tasks_message">Tasks you estimate in this sprint will appear here.</string>
+    <string name="feature_sprints_delete_dialog_title">Delete sprint?</string>
+    <string name="feature_sprints_delete_dialog_message">“%1$s” and all of its tasks will be permanently deleted. This can’t be undone.</string>
+    <string name="feature_sprints_delete_dialog_confirm">Delete</string>
+</resources>
