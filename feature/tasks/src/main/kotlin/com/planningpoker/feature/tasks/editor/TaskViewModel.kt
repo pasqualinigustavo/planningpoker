@@ -14,6 +14,7 @@ import com.planningpoker.core.model.Task
 import com.planningpoker.core.model.Vote
 import com.planningpoker.feature.tasks.navigation.TaskRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +24,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 sealed interface TaskEvent {
     data class TaskCreated(val sprintId: Long, val taskId: Long) : TaskEvent
@@ -113,6 +113,7 @@ class TaskViewModel @Inject constructor(
             when (outcome) {
                 is TaskSaveOutcome.Saved ->
                     if (isNewTask) eventChannel.send(TaskEvent.TaskCreated(route.sprintId, outcome.taskId))
+
                 is TaskSaveOutcome.Failed -> eventChannel.send(TaskEvent.EvaluationFailed(outcome.error))
             }
         }

@@ -6,10 +6,10 @@ import app.cash.paparazzi.Paparazzi
 import com.planningpoker.core.designsystem.theme.PlanningPokerTheme
 import com.planningpoker.core.model.Task
 import com.planningpoker.core.model.Vote
-import org.junit.Rule
-import org.junit.Test
 import java.time.Instant
 import java.time.ZoneOffset
+import org.junit.Rule
+import org.junit.Test
 
 class TaskScreenSnapshotTest {
 
@@ -66,23 +66,20 @@ class TaskScreenSnapshotTest {
     @Test
     fun noVoiceInput() = snapshot(filled, isVoiceInputAvailable = false)
 
-    private fun snapshot(
-        uiState: TaskUiState,
-        darkTheme: Boolean = false,
-        isVoiceInputAvailable: Boolean = true,
-    ) = paparazzi.snapshot {
-        PlanningPokerTheme(darkTheme = darkTheme, dynamicColor = false) {
-            TaskScreen(
-                uiState = uiState,
-                isVoiceInputAvailable = isVoiceInputAvailable,
-                snackbarHostState = SnackbarHostState(),
-                onBack = {},
-                onDescriptionChange = {},
-                onVoteSelect = {},
-                onDictateClick = {},
-                onEvaluateClick = {},
-                zoneId = ZoneOffset.UTC,
-            )
+    private fun snapshot(uiState: TaskUiState, darkTheme: Boolean = false, isVoiceInputAvailable: Boolean = true) =
+        paparazzi.snapshot {
+            PlanningPokerTheme(darkTheme = darkTheme, dynamicColor = false) {
+                TaskScreen(
+                    uiState = uiState,
+                    isVoiceInputAvailable = isVoiceInputAvailable,
+                    snackbarHostState = SnackbarHostState(),
+                    onBack = {},
+                    onDescriptionChange = {},
+                    onVoteSelect = {},
+                    onDictateClick = {},
+                    onEvaluateClick = {},
+                    zoneId = ZoneOffset.UTC,
+                )
+            }
         }
-    }
 }

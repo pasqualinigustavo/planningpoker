@@ -8,6 +8,7 @@ import com.planningpoker.core.model.Vote
 import com.planningpoker.feature.sprints.testing.FakeSprintRepository
 import com.planningpoker.feature.sprints.testing.FakeTaskRepository
 import com.planningpoker.feature.sprints.testing.MainDispatcherRule
+import java.time.Instant
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -15,7 +16,6 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import java.time.Instant
 
 class SprintDetailsViewModelTest {
 
@@ -37,10 +37,7 @@ class SprintDetailsViewModelTest {
         evaluatedAt = Instant.EPOCH,
     )
 
-    private fun viewModel(
-        sprintId: Long = sprint.id,
-        extras: Map<String, Any> = emptyMap(),
-    ) = SprintDetailsViewModel(
+    private fun viewModel(sprintId: Long = sprint.id, extras: Map<String, Any> = emptyMap()) = SprintDetailsViewModel(
         SavedStateHandle(mapOf("sprintId" to sprintId) + extras),
         repository,
         taskRepository,

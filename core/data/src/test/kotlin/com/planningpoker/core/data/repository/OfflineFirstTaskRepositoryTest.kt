@@ -8,19 +8,20 @@ import com.planningpoker.core.model.TaskEvaluation
 import com.planningpoker.core.model.TaskEvaluationRequest
 import com.planningpoker.core.model.TaskEvaluationResult
 import com.planningpoker.core.model.Vote
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneOffset
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.time.Clock
-import java.time.Instant
-import java.time.ZoneOffset
 
 class OfflineFirstTaskRepositoryTest {
 
     private val firstEvaluation = TaskEvaluationResult("Biometric login", Vote.EIGHT, listOf("Device support"))
-    private val secondEvaluation = TaskEvaluationResult("Fingerprint login", Vote.THIRTEEN, listOf("Fallback", "Security review"))
+    private val secondEvaluation =
+        TaskEvaluationResult("Fingerprint login", Vote.THIRTEEN, listOf("Fallback", "Security review"))
 
     private var now = Instant.parse("2026-10-25T10:00:00Z")
     private val clock = object : Clock() {
@@ -35,7 +36,11 @@ class OfflineFirstTaskRepositoryTest {
 
     @Test
     fun successfulEvaluationStoresAllFields() = runTest {
-        val outcome = repository.evaluateAndCreate(sprintId = 7, description = "  Add biometric login ", userVote = Vote.FIVE)
+        val outcome = repository.evaluateAndCreate(
+            sprintId = 7,
+            description = "  Add biometric login ",
+            userVote = Vote.FIVE,
+        )
 
         val id = (outcome as TaskSaveOutcome.Saved).taskId
         assertEquals(

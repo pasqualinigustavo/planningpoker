@@ -96,8 +96,10 @@ internal fun TaskRoute(
         viewModel.events.collect { event ->
             when (event) {
                 is TaskEvent.TaskCreated -> currentOnTaskCreated(event.sprintId, event.taskId)
+
                 is TaskEvent.EvaluationFailed ->
                     snackbarHostState.showSnackbar(context.getString(event.error.messageRes()))
+
                 TaskEvent.TaskMissing -> currentOnBack()
             }
         }
@@ -190,7 +192,11 @@ internal fun TaskScreen(
                 ) {
                     Text(
                         stringResource(
-                            if (uiState.isNewTask) R.string.feature_tasks_evaluate else R.string.feature_tasks_reevaluate,
+                            if (uiState.isNewTask) {
+                                R.string.feature_tasks_evaluate
+                            } else {
+                                R.string.feature_tasks_reevaluate
+                            },
                         ),
                     )
                 }
@@ -258,11 +264,7 @@ internal fun TaskScreen(
 }
 
 @Composable
-private fun VoteScale(
-    selectedVote: Vote?,
-    enabled: Boolean,
-    onVoteSelect: (Vote) -> Unit,
-) {
+private fun VoteScale(selectedVote: Vote?, enabled: Boolean, onVoteSelect: (Vote) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Column(modifier = Modifier.padding(horizontal = 16.dp)) {
             Text(stringResource(R.string.feature_tasks_your_vote), style = MaterialTheme.typography.titleMedium)
@@ -299,7 +301,11 @@ private fun TechLeadEvaluation(task: Task, zoneId: ZoneId) {
     ) {
         Text(stringResource(R.string.feature_tasks_tech_lead), style = MaterialTheme.typography.titleMedium)
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            VoteCard(label = stringResource(R.string.feature_tasks_you), vote = task.userVote, modifier = Modifier.weight(1f))
+            VoteCard(
+                label = stringResource(R.string.feature_tasks_you),
+                vote = task.userVote,
+                modifier = Modifier.weight(1f),
+            )
             VoteCard(
                 label = stringResource(R.string.feature_tasks_ai),
                 vote = task.aiVote,
@@ -327,12 +333,7 @@ private fun TechLeadEvaluation(task: Task, zoneId: ZoneId) {
 }
 
 @Composable
-private fun VoteCard(
-    label: String,
-    vote: Vote,
-    modifier: Modifier = Modifier,
-    highlighted: Boolean = false,
-) {
+private fun VoteCard(label: String, vote: Vote, modifier: Modifier = Modifier, highlighted: Boolean = false) {
     Card(
         modifier = modifier,
         colors = if (highlighted) {
@@ -359,13 +360,11 @@ private fun EvaluationError.messageRes(): Int = when (this) {
     EvaluationError.Unknown -> R.string.feature_tasks_error_unknown
 }
 
-private fun speechRecognitionIntent(prompt: String) =
-    Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        .putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-        // Device language, so dictation matches the language the Tech Lead answers in.
-        .putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault().toLanguageTag())
-        .putExtra(RecognizerIntent.EXTRA_PROMPT, prompt)
+private fun speechRecognitionIntent(prompt: String) = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+    .putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+    // Device language, so dictation matches the language the Tech Lead answers in.
+    .putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault().toLanguageTag())
+    .putExtra(RecognizerIntent.EXTRA_PROMPT, prompt)
 
-private fun Context.isSpeechRecognitionAvailable(): Boolean =
-    SpeechRecognizer.isRecognitionAvailable(this) &&
-        Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).resolveActivity(packageManager) != null
+private fun Context.isSpeechRecognitionAvailable(): Boolean = SpeechRecognizer.isRecognitionAvailable(this) &&
+    Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).resolveActivity(packageManager) != null

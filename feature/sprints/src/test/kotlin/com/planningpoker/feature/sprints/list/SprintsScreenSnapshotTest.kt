@@ -5,10 +5,10 @@ import app.cash.paparazzi.DeviceConfig
 import app.cash.paparazzi.Paparazzi
 import com.planningpoker.core.designsystem.theme.PlanningPokerTheme
 import com.planningpoker.core.model.Sprint
-import org.junit.Rule
-import org.junit.Test
 import java.time.Instant
 import java.time.ZoneOffset
+import org.junit.Rule
+import org.junit.Test
 
 class SprintsScreenSnapshotTest {
 
@@ -34,8 +34,7 @@ class SprintsScreenSnapshotTest {
     fun createDialogEmpty() = snapshot(SprintsUiState.Empty, CreateSprintDialogState(""))
 
     @Test
-    fun createDialogFilled() =
-        snapshot(SprintsUiState.Sprints(sprints), CreateSprintDialogState("Sprint 43"))
+    fun createDialogFilled() = snapshot(SprintsUiState.Sprints(sprints), CreateSprintDialogState("Sprint 43"))
 
     private fun snapshot(
         uiState: SprintsUiState,

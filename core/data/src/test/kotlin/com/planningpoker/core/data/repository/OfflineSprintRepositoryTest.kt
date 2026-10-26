@@ -2,15 +2,15 @@ package com.planningpoker.core.data.repository
 
 import com.planningpoker.core.data.testdoubles.FakeSprintDao
 import com.planningpoker.core.model.Sprint
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneOffset
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.time.Clock
-import java.time.Instant
-import java.time.ZoneOffset
 
 class OfflineSprintRepositoryTest {
 

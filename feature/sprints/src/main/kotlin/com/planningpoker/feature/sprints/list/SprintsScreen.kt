@@ -36,10 +36,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 @Composable
-internal fun SprintsRoute(
-    onSprintClick: (Long) -> Unit,
-    viewModel: SprintsViewModel = hiltViewModel(),
-) {
+internal fun SprintsRoute(onSprintClick: (Long) -> Unit, viewModel: SprintsViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     SprintsScreen(
         uiState = uiState,

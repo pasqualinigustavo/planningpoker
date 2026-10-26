@@ -4,18 +4,16 @@ import android.util.Log
 import com.planningpoker.core.model.EvaluationError
 import com.planningpoker.core.model.TaskEvaluation
 import com.planningpoker.core.model.TaskEvaluationRequest
-import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration.Companion.seconds
+import kotlinx.coroutines.withTimeoutOrNull
 
 internal val EVALUATION_TIMEOUT = 30.seconds
 
 private const val TAG = "TechLeadAgent"
 
-internal class GeminiTechLeadAgent @Inject constructor(
-    private val model: TechLeadModel,
-) : TechLeadAgent {
+internal class GeminiTechLeadAgent @Inject constructor(private val model: TechLeadModel) : TechLeadAgent {
 
     // Wraps the answer so a null text is not mistaken for a timeout.
     private class Answer(val text: String?)

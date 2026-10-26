@@ -10,10 +10,10 @@ import com.planningpoker.core.model.TaskEvaluation
 import com.planningpoker.core.model.TaskEvaluationRequest
 import com.planningpoker.core.model.TaskEvaluationResult
 import com.planningpoker.core.model.Vote
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import java.time.Clock
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 internal class OfflineFirstTaskRepository @Inject constructor(
     private val taskDao: TaskDao,
@@ -25,14 +25,9 @@ internal class OfflineFirstTaskRepository @Inject constructor(
     override fun observeTasks(sprintId: Long): Flow<List<Task>> =
         taskDao.observeTasks(sprintId).map { tasks -> tasks.map(TaskEntity::asExternalModel) }
 
-    override fun observeTask(id: Long): Flow<Task?> =
-        taskDao.observeTask(id).map { it?.asExternalModel() }
+    override fun observeTask(id: Long): Flow<Task?> = taskDao.observeTask(id).map { it?.asExternalModel() }
 
-    override suspend fun evaluateAndCreate(
-        sprintId: Long,
-        description: String,
-        userVote: Vote,
-    ): TaskSaveOutcome {
+    override suspend fun evaluateAndCreate(sprintId: Long, description: String, userVote: Vote): TaskSaveOutcome {
         val trimmed = description.trim()
         require(trimmed.isNotEmpty()) { "Task description must not be blank" }
         return evaluate(trimmed) { result ->
@@ -50,10 +45,7 @@ internal class OfflineFirstTaskRepository @Inject constructor(
         }
     }
 
-    private suspend fun evaluate(
-        description: String,
-        save: suspend (TaskEvaluationResult) -> Long,
-    ): TaskSaveOutcome {
+    private suspend fun evaluate(description: String, save: suspend (TaskEvaluationResult) -> Long): TaskSaveOutcome {
         val request = TaskEvaluationRequest(description = description, languageTag = deviceLanguage.tag())
         return when (val evaluation = techLeadAgent.evaluate(request)) {
             is TaskEvaluation.Success -> TaskSaveOutcome.Saved(save(evaluation.result))
@@ -61,20 +53,15 @@ internal class OfflineFirstTaskRepository @Inject constructor(
         }
     }
 
-    private fun entity(
-        id: Long,
-        sprintId: Long,
-        description: String,
-        userVote: Vote,
-        result: TaskEvaluationResult,
-    ) = TaskEntity(
-        id = id,
-        sprintId = sprintId,
-        title = result.title,
-        description = description,
-        userVote = userVote,
-        aiVote = result.estimate,
-        risks = result.risks,
-        evaluatedAt = clock.millis(),
-    )
+    private fun entity(id: Long, sprintId: Long, description: String, userVote: Vote, result: TaskEvaluationResult) =
+        TaskEntity(
+            id = id,
+            sprintId = sprintId,
+            title = result.title,
+            description = description,
+            userVote = userVote,
+            aiVote = result.estimate,
+            risks = result.risks,
+            evaluatedAt = clock.millis(),
+        )
 }

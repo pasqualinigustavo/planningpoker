@@ -144,11 +144,7 @@ internal fun SprintDetailsScreen(
 }
 
 @Composable
-private fun TaskList(
-    tasks: List<Task>,
-    onTaskClick: (taskId: Long) -> Unit,
-    contentPadding: PaddingValues,
-) {
+private fun TaskList(tasks: List<Task>, onTaskClick: (taskId: Long) -> Unit, contentPadding: PaddingValues) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(

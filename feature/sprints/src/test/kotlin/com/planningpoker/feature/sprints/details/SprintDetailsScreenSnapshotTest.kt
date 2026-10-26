@@ -6,9 +6,9 @@ import com.planningpoker.core.designsystem.theme.PlanningPokerTheme
 import com.planningpoker.core.model.Sprint
 import com.planningpoker.core.model.Task
 import com.planningpoker.core.model.Vote
+import java.time.Instant
 import org.junit.Rule
 import org.junit.Test
-import java.time.Instant
 
 class SprintDetailsScreenSnapshotTest {
 
@@ -52,22 +52,19 @@ class SprintDetailsScreenSnapshotTest {
     @Test
     fun deleteDialog() = snapshot(loaded, isDeleteDialogOpen = true)
 
-    private fun snapshot(
-        uiState: SprintDetailsUiState,
-        isDeleteDialogOpen: Boolean,
-        darkTheme: Boolean = false,
-    ) = paparazzi.snapshot {
-        PlanningPokerTheme(darkTheme = darkTheme, dynamicColor = false) {
-            SprintDetailsScreen(
-                uiState = uiState,
-                isDeleteDialogOpen = isDeleteDialogOpen,
-                onBack = {},
-                onCreateTask = {},
-                onTaskClick = {},
-                onDeleteClick = {},
-                onConfirmDelete = {},
-                onDismissDeleteDialog = {},
-            )
+    private fun snapshot(uiState: SprintDetailsUiState, isDeleteDialogOpen: Boolean, darkTheme: Boolean = false) =
+        paparazzi.snapshot {
+            PlanningPokerTheme(darkTheme = darkTheme, dynamicColor = false) {
+                SprintDetailsScreen(
+                    uiState = uiState,
+                    isDeleteDialogOpen = isDeleteDialogOpen,
+                    onBack = {},
+                    onCreateTask = {},
+                    onTaskClick = {},
+                    onDeleteClick = {},
+                    onConfirmDelete = {},
+                    onDismissDeleteDialog = {},
+                )
+            }
         }
-    }
 }

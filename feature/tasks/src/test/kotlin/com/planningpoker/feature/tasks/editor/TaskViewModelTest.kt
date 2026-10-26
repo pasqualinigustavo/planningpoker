@@ -8,13 +8,13 @@ import com.planningpoker.core.model.Task
 import com.planningpoker.core.model.Vote
 import com.planningpoker.feature.tasks.testing.FakeTaskRepository
 import com.planningpoker.feature.tasks.testing.MainDispatcherRule
+import java.time.Instant
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import java.time.Instant
 
 class TaskViewModelTest {
 
@@ -155,7 +155,10 @@ class TaskViewModelTest {
     @Test
     fun restoredEditsWinOverDatabaseValues() {
         val viewModel = savedTaskViewModel(
-            mapOf(TaskViewModel.KEY_DESCRIPTION to "Edited before process death", TaskViewModel.KEY_VOTE to Vote.TWENTY.name),
+            mapOf(
+                TaskViewModel.KEY_DESCRIPTION to "Edited before process death",
+                TaskViewModel.KEY_VOTE to Vote.TWENTY.name,
+            ),
         )
 
         assertEquals("Edited before process death", viewModel.description)
@@ -192,7 +195,10 @@ class TaskViewModelTest {
     @Test
     fun dictationIsAppendedWithASingleSpace() {
         assertEquals("Login screen with biometric support", appendDictation("Login screen", "with biometric support"))
-        assertEquals("Login screen with biometric support", appendDictation("Login screen  ", " with biometric support "))
+        assertEquals(
+            "Login screen with biometric support",
+            appendDictation("Login screen  ", " with biometric support "),
+        )
         assertEquals("Fresh text", appendDictation("", "Fresh text"))
         assertEquals("Fresh text", appendDictation("   ", "Fresh text"))
         assertEquals("Unchanged", appendDictation("Unchanged", "   "))

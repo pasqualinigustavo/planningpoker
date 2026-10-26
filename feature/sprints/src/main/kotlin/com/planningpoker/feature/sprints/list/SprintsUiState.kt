@@ -9,8 +9,6 @@ sealed interface SprintsUiState {
 }
 
 /** State of the create-sprint dialog while it is open. */
-data class CreateSprintDialogState(
-    val name: String,
-) {
+data class CreateSprintDialogState(val name: String) {
     val canSave: Boolean get() = name.isNotBlank()
 }

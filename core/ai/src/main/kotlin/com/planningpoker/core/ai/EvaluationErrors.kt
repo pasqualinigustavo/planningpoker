@@ -19,8 +19,11 @@ import java.io.IOException
 /** Maps SDK and transport failures so Firebase exception types never leave `core:ai`. */
 internal fun Throwable.toEvaluationError(): EvaluationError = when {
     causes().any { it is IOException } -> EvaluationError.Network
+
     this is RequestTimeoutException -> EvaluationError.Timeout
+
     this is SerializationException -> EvaluationError.InvalidResponse
+
     this is QuotaExceededException ||
         this is PromptBlockedException ||
         this is ContentBlockedException ||
@@ -33,6 +36,7 @@ internal fun Throwable.toEvaluationError(): EvaluationError = when {
         this is InvalidLocationException ||
         // Includes App Check rejections, which the backend reports as server errors.
         this is ServerException -> EvaluationError.Rejected
+
     else -> EvaluationError.Unknown
 }
 

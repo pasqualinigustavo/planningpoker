@@ -9,4 +9,13 @@ plugins {
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.paparazzi) apply false
     alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.ktlint)
+}
+
+allprojects {
+    apply(plugin = rootProject.libs.plugins.ktlint.get().pluginId)
+
+    configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+        version.set(rootProject.libs.versions.ktlint.get())
+    }
 }

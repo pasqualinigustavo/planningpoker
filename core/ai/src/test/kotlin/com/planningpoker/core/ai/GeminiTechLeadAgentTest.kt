@@ -4,6 +4,8 @@ import com.planningpoker.core.model.EvaluationError
 import com.planningpoker.core.model.TaskEvaluation
 import com.planningpoker.core.model.TaskEvaluationRequest
 import com.planningpoker.core.model.Vote
+import java.io.IOException
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitCancellation
@@ -13,8 +15,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.io.IOException
-import kotlin.time.Duration.Companion.seconds
 
 class GeminiTechLeadAgentTest {
 
@@ -67,14 +67,20 @@ class GeminiTechLeadAgentTest {
 
     @Test
     fun noAnswerWithin30SecondsIsTimeout() = runTest {
-        val result = agent { delay(31.seconds); validAnswer }.evaluate(request)
+        val result = agent {
+            delay(31.seconds)
+            validAnswer
+        }.evaluate(request)
 
         assertEquals(TaskEvaluation.Failure(EvaluationError.Timeout), result)
     }
 
     @Test
     fun answerJustInTimeIsAccepted() = runTest {
-        val result = agent { delay(29.seconds); validAnswer }.evaluate(request)
+        val result = agent {
+            delay(29.seconds)
+            validAnswer
+        }.evaluate(request)
 
         assertTrue(result is TaskEvaluation.Success)
     }

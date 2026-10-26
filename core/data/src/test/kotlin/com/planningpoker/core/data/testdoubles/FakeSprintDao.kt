@@ -14,11 +14,11 @@ class FakeSprintDao : SprintDao {
 
     val inserted: List<SprintEntity> get() = sprints.value
 
-    override fun observeSprints(): Flow<List<SprintEntity>> =
-        sprints.map { list -> list.sortedWith(compareByDescending<SprintEntity> { it.createdAt }.thenByDescending { it.id }) }
+    override fun observeSprints(): Flow<List<SprintEntity>> = sprints.map { list ->
+        list.sortedWith(compareByDescending<SprintEntity> { it.createdAt }.thenByDescending { it.id })
+    }
 
-    override fun observeSprint(id: Long): Flow<SprintEntity?> =
-        sprints.map { list -> list.firstOrNull { it.id == id } }
+    override fun observeSprint(id: Long): Flow<SprintEntity?> = sprints.map { list -> list.firstOrNull { it.id == id } }
 
     override suspend fun insert(sprint: SprintEntity): Long {
         val id = nextId++

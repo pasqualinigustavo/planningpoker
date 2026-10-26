@@ -18,13 +18,12 @@ internal object DatabaseModule {
 
     @Provides
     @Singleton
-    fun providesPlanningPokerDatabase(
-        @ApplicationContext context: Context,
-    ): PlanningPokerDatabase = Room.databaseBuilder(
-        context,
-        PlanningPokerDatabase::class.java,
-        "planning-poker-database",
-    ).build()
+    fun providesPlanningPokerDatabase(@ApplicationContext context: Context): PlanningPokerDatabase =
+        Room.databaseBuilder(
+            context,
+            PlanningPokerDatabase::class.java,
+            "planning-poker-database",
+        ).build()
 
     @Provides
     fun providesSprintDao(database: PlanningPokerDatabase): SprintDao = database.sprintDao()
