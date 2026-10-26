@@ -31,6 +31,8 @@ captures/
 .cxx/
 
 # Generated
+# Android Studio's "Generate Signed App Bundle / APK" output
+app/release/
 *.apk
 *.aab
 *.ap_
