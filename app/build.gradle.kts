@@ -13,9 +13,8 @@ val keystoreProperties = Properties().apply {
     if (file.isFile) file.inputStream().use(::load)
 }
 
-fun signingValue(property: String, environmentVariable: String): String? =
-    keystoreProperties.getProperty(property)
-        ?: providers.environmentVariable(environmentVariable).orNull
+fun signingValue(property: String, environmentVariable: String): String? = keystoreProperties.getProperty(property)
+    ?: providers.environmentVariable(environmentVariable).orNull
 
 val releaseStoreFile = signingValue("storeFile", "PLANNINGPOKER_KEYSTORE_FILE")
 

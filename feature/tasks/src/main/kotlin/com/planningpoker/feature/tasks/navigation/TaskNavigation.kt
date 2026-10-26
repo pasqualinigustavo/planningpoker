@@ -15,15 +15,11 @@ fun NavController.navigateToNewTask(sprintId: Long) = navigate(TaskRoute(sprintI
 fun NavController.navigateToTask(sprintId: Long, taskId: Long) = navigate(TaskRoute(sprintId, taskId))
 
 /** Replaces the new-task screen with the saved task, so back returns to sprint details. */
-fun NavController.navigateToCreatedTask(sprintId: Long, taskId: Long) =
-    navigate(TaskRoute(sprintId, taskId)) {
-        popUpTo<TaskRoute> { inclusive = true }
-    }
+fun NavController.navigateToCreatedTask(sprintId: Long, taskId: Long) = navigate(TaskRoute(sprintId, taskId)) {
+    popUpTo<TaskRoute> { inclusive = true }
+}
 
-fun NavGraphBuilder.taskScreen(
-    onBack: () -> Unit,
-    onTaskCreated: (sprintId: Long, taskId: Long) -> Unit,
-) {
+fun NavGraphBuilder.taskScreen(onBack: () -> Unit, onTaskCreated: (sprintId: Long, taskId: Long) -> Unit) {
     composable<TaskRoute> {
         TaskRoute(onBack = onBack, onTaskCreated = onTaskCreated)
     }

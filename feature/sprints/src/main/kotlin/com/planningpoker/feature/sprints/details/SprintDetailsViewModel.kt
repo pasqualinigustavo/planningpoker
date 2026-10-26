@@ -8,6 +8,7 @@ import com.planningpoker.core.data.repository.SprintRepository
 import com.planningpoker.core.data.repository.TaskRepository
 import com.planningpoker.feature.sprints.navigation.SprintDetailsRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,7 +19,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class SprintDetailsViewModel @Inject constructor(

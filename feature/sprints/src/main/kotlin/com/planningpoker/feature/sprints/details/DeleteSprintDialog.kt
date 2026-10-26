@@ -13,11 +13,7 @@ import androidx.compose.ui.res.stringResource
 import com.planningpoker.feature.sprints.R
 
 @Composable
-internal fun DeleteSprintDialog(
-    sprintName: String,
-    onConfirm: () -> Unit,
-    onDismiss: () -> Unit,
-) {
+internal fun DeleteSprintDialog(sprintName: String, onConfirm: () -> Unit, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
         icon = { Icon(Icons.Default.Warning, contentDescription = null) },

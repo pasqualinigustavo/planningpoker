@@ -19,8 +19,7 @@ class SprintsViewModelTest {
 
     private val repository = FakeSprintRepository()
 
-    private fun viewModel(handle: SavedStateHandle = SavedStateHandle()) =
-        SprintsViewModel(handle, repository)
+    private fun viewModel(handle: SavedStateHandle = SavedStateHandle()) = SprintsViewModel(handle, repository)
 
     @Test
     fun emptyThenListAfterCreate() = runTest {

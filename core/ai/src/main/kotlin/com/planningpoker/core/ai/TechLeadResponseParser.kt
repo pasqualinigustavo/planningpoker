@@ -14,11 +14,7 @@ internal object TechLeadResponseParser {
     private val json = Json { ignoreUnknownKeys = true }
 
     @Serializable
-    private data class RawEvaluation(
-        val title: String,
-        val estimate: String,
-        val risks: List<String>,
-    )
+    private data class RawEvaluation(val title: String, val estimate: String, val risks: List<String>)
 
     fun parse(text: String?): TaskEvaluation {
         val raw = text?.let { runCatching { json.decodeFromString<RawEvaluation>(it) }.getOrNull() }

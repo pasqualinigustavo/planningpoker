@@ -17,12 +17,7 @@ import androidx.compose.ui.unit.dp
 
 /** Centered placeholder for screens with no content yet. */
 @Composable
-fun EmptyState(
-    icon: ImageVector,
-    title: String,
-    message: String,
-    modifier: Modifier = Modifier,
-) {
+fun EmptyState(icon: ImageVector, title: String, message: String, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()

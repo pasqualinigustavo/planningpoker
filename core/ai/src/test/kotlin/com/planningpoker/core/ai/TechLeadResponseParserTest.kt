@@ -11,8 +11,11 @@ class TechLeadResponseParserTest {
 
     private val invalid = TaskEvaluation.Failure(EvaluationError.InvalidResponse)
 
-    private fun json(title: String = "\"Biometric login\"", estimate: String = "\"8\"", risks: String = "[\"Device fragmentation\", \"Fallback flow\"]") =
-        """{"title": $title, "estimate": $estimate, "risks": $risks}"""
+    private fun json(
+        title: String = "\"Biometric login\"",
+        estimate: String = "\"8\"",
+        risks: String = "[\"Device fragmentation\", \"Fallback flow\"]",
+    ) = """{"title": $title, "estimate": $estimate, "risks": $risks}"""
 
     @Test
     fun validResponse() {
