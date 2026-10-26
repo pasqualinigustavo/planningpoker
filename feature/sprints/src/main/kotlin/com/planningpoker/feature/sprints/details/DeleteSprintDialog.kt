@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import com.planningpoker.core.designsystem.theme.PlanningPokerTheme
 import com.planningpoker.feature.sprints.R
 
 @Composable
@@ -34,4 +36,12 @@ internal fun DeleteSprintDialog(sprintName: String, onConfirm: () -> Unit, onDis
             }
         },
     )
+}
+
+@PreviewLightDark
+@Composable
+private fun DeleteSprintDialogPreview() {
+    PlanningPokerTheme(dynamicColor = false) {
+        DeleteSprintDialog(sprintName = "Sprint 42", onConfirm = {}, onDismiss = {})
+    }
 }
