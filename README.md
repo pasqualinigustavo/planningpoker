@@ -51,25 +51,30 @@ This repository follows a **Spec-Driven Development** workflow powered by [**Ope
 
 The project is structured around Google's official [**Now in Android (NiA)**](https://github.com/android/nowinandroid) modular architecture, enforcing strict separation of concerns, unidirectional data flow (UDF), and reusable Gradle convention plugins in `build-logic/convention`.
 
-```mermaid
-graph TD
-    app[":app"] --> feat_sprints[":feature:sprints"]
-    app --> feat_tasks[":feature:tasks"]
-
-    feat_sprints --> core_ui[":core:ui"]
-    feat_tasks --> core_ui
-    core_ui --> core_design[":core:designsystem"]
-
-    feat_sprints --> core_data[":core:data"]
-    feat_tasks --> core_data
-
-    core_data --> core_db[":core:database"]
-    core_data --> core_ai[":core:ai"]
-
-    core_db --> core_model[":core:model"]
-    core_ai --> core_model
-    core_data --> core_model
-    core_ui --> core_model
+```text
+                              :app
+                                |
+                +---------------+---------------+
+                |                               |
+                v                               v
+        :feature:sprints                 :feature:tasks
+                |                               |
+                +---------------+---------------+
+                                |
+                +---------------+---------------+
+                |                               |
+                v                               v
+            :core:ui                       :core:data
+                |                               |
+        +-------+-------+             +---------+---------+
+        |               |             |         |         |
+        v               |             v         v         |
+:core:designsystem      |      :core:database :core:ai    |
+                        |             |         |         |
+                        +-------------+----+----+---------+
+                                           |
+                                           v
+                                      :core:model
 ```
 
 - **`:app`** — Application shell, `@HiltAndroidApp`, App Check initialization, and root `NavHost`.
