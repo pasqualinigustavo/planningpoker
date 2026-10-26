@@ -57,14 +57,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.planningpoker.core.designsystem.theme.PlanningPokerTheme
 import com.planningpoker.core.model.EvaluationError
 import com.planningpoker.core.model.Task
 import com.planningpoker.core.model.Vote
 import com.planningpoker.feature.tasks.R
+import java.time.Instant
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Locale
@@ -368,3 +375,76 @@ private fun speechRecognitionIntent(prompt: String) = Intent(RecognizerIntent.AC
 
 private fun Context.isSpeechRecognitionAvailable(): Boolean = SpeechRecognizer.isRecognitionAvailable(this) &&
     Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).resolveActivity(packageManager) != null
+
+private val previewEmpty = TaskUiState(
+    isNewTask = true,
+    isLoaded = true,
+    description = "",
+    selectedVote = null,
+    isEvaluating = false,
+    canEvaluate = false,
+    savedTask = null,
+)
+
+private val previewFilled = previewEmpty.copy(
+    description = "Add fingerprint login to the sign-in screen with a PIN fallback",
+    selectedVote = Vote.FIVE,
+    canEvaluate = true,
+)
+
+private val previewSaved = previewFilled.copy(
+    isNewTask = false,
+    savedTask = Task(
+        id = 1,
+        sprintId = 1,
+        title = "Fingerprint login with PIN fallback",
+        description = previewFilled.description,
+        userVote = Vote.FIVE,
+        aiVote = Vote.EIGHT,
+        risks = listOf(
+            "Biometric APIs behave differently across device manufacturers.",
+            "The PIN fallback needs its own secure storage and lockout rules.",
+        ),
+        evaluatedAt = Instant.parse("2026-10-25T14:30:00Z"),
+    ),
+)
+
+private class TaskUiStatePreviewProvider : PreviewParameterProvider<TaskUiState> {
+    override val values = sequenceOf(
+        previewEmpty,
+        previewFilled,
+        previewFilled.copy(isEvaluating = true, canEvaluate = false),
+        previewSaved,
+        previewSaved.copy(savedTask = previewSaved.savedTask?.copy(risks = emptyList())),
+        previewEmpty.copy(isLoaded = false),
+    )
+}
+
+@Preview
+@Composable
+private fun TaskScreenPreview(@PreviewParameter(TaskUiStatePreviewProvider::class) uiState: TaskUiState) {
+    TaskScreenPreviewContent(uiState)
+}
+
+@PreviewLightDark
+@Composable
+private fun TaskScreenSavedPreview() {
+    TaskScreenPreviewContent(previewSaved)
+}
+
+@Composable
+private fun TaskScreenPreviewContent(uiState: TaskUiState) {
+    PlanningPokerTheme(dynamicColor = false) {
+        TaskScreen(
+            uiState = uiState,
+            isVoiceInputAvailable = true,
+            snackbarHostState = remember { SnackbarHostState() },
+            onBack = {},
+            onDescriptionChange = {},
+            onVoteSelect = {},
+            onDictateClick = {},
+            onEvaluateClick = {},
+            zoneId = ZoneOffset.UTC,
+        )
+    }
+}

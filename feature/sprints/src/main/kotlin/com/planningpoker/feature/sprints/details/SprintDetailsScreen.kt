@@ -31,12 +31,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.planningpoker.core.designsystem.component.EmptyState
+import com.planningpoker.core.designsystem.theme.PlanningPokerTheme
+import com.planningpoker.core.model.Sprint
 import com.planningpoker.core.model.Task
+import com.planningpoker.core.model.Vote
 import com.planningpoker.feature.sprints.R
+import java.time.Instant
 
 @Composable
 internal fun SprintDetailsRoute(
@@ -163,5 +171,69 @@ private fun TaskList(tasks: List<Task>, onTaskClick: (taskId: Long) -> Unit, con
             )
             HorizontalDivider()
         }
+    }
+}
+
+private val previewSprint = Sprint(id = 1, name = "Sprint 42", createdAt = Instant.parse("2026-10-25T12:00:00Z"))
+
+private fun previewTask(id: Long, title: String, userVote: Vote, aiVote: Vote) = Task(
+    id = id,
+    sprintId = previewSprint.id,
+    title = title,
+    description = title,
+    userVote = userVote,
+    aiVote = aiVote,
+    risks = emptyList(),
+    evaluatedAt = Instant.parse("2026-10-25T12:00:00Z"),
+)
+
+private class SprintDetailsUiStatePreviewProvider : PreviewParameterProvider<SprintDetailsUiState> {
+    override val values = sequenceOf(
+        SprintDetailsUiState.Success(
+            previewSprint,
+            listOf(
+                previewTask(3, "Fingerprint login with PIN fallback", Vote.FIVE, Vote.EIGHT),
+                previewTask(2, "Export sprint summary as PDF", Vote.UNKNOWN, Vote.THIRTEEN),
+                previewTask(1, "Rename sprint", Vote.ONE, Vote.ONE),
+            ),
+        ),
+        SprintDetailsUiState.Success(previewSprint, emptyList()),
+        SprintDetailsUiState.Loading,
+    )
+}
+
+@PreviewLightDark
+@Composable
+private fun SprintDetailsScreenPreview(
+    @PreviewParameter(SprintDetailsUiStatePreviewProvider::class) uiState: SprintDetailsUiState,
+) {
+    PlanningPokerTheme(dynamicColor = false) {
+        SprintDetailsScreen(
+            uiState = uiState,
+            isDeleteDialogOpen = false,
+            onBack = {},
+            onCreateTask = {},
+            onTaskClick = {},
+            onDeleteClick = {},
+            onConfirmDelete = {},
+            onDismissDeleteDialog = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun SprintDetailsScreenDeleteDialogPreview() {
+    PlanningPokerTheme(dynamicColor = false) {
+        SprintDetailsScreen(
+            uiState = SprintDetailsUiState.Success(previewSprint, emptyList()),
+            isDeleteDialogOpen = true,
+            onBack = {},
+            onCreateTask = {},
+            onTaskClick = {},
+            onDeleteClick = {},
+            onConfirmDelete = {},
+            onDismissDeleteDialog = {},
+        )
     }
 }

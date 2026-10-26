@@ -15,6 +15,9 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import com.planningpoker.core.designsystem.theme.PlanningPokerTheme
 import com.planningpoker.feature.sprints.R
 
 @Composable
@@ -56,5 +59,33 @@ internal fun CreateSprintDialog(
     )
     if (requestFocus) {
         LaunchedEffect(Unit) { focusRequester.requestFocus() }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun CreateSprintDialogPreview() {
+    PlanningPokerTheme(dynamicColor = false) {
+        CreateSprintDialog(
+            state = CreateSprintDialogState(name = "Sprint 42"),
+            onNameChange = {},
+            onSave = {},
+            onDismiss = {},
+            requestFocus = false,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun CreateSprintDialogEmptyPreview() {
+    PlanningPokerTheme(dynamicColor = false) {
+        CreateSprintDialog(
+            state = CreateSprintDialogState(name = ""),
+            onNameChange = {},
+            onSave = {},
+            onDismiss = {},
+            requestFocus = false,
+        )
     }
 }
